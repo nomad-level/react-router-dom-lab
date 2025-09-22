@@ -10,16 +10,16 @@ function LetterForm({ mailboxes, addLetter }) {
   
   const navigate = useNavigate();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(prev => ({
-      ...prev,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
       [name]: value
-    }));
+    });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     
     if (!formData.mailboxId) {
       alert('Please select a mailbox for this letter');
@@ -27,11 +27,9 @@ function LetterForm({ mailboxes, addLetter }) {
     }
     
     addLetter(formData);
-    
-    const selectedMailboxId = formData.mailboxId;
+    const targetMailbox = formData.mailboxId;
     setFormData({ mailboxId: '', recipient: '', message: '' });
-    
-    navigate(`/mailboxes/${selectedMailboxId}`);
+    navigate(`/mailboxes/${targetMailbox}`);
   };
 
   if (mailboxes.length === 0) {

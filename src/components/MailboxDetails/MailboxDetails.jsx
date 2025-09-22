@@ -4,12 +4,12 @@ function MailboxDetails({ mailboxes, letters }) {
   const { mailboxId } = useParams();
   
   const selectedBox = mailboxes.find(
-    (mailbox) => mailbox._id === Number(mailboxId)
+    mailbox => mailbox._id === Number(mailboxId)
   );
 
-  const selectedLetters = letters.filter((letter) => (
-    letter.mailboxId === Number(mailboxId)
-  ));
+  const selectedLetters = letters.filter(
+    letter => letter.mailboxId === Number(mailboxId)
+  );
 
   if (!selectedBox) {
     return (

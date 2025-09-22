@@ -9,16 +9,16 @@ function MailboxForm({ addBox }) {
   
   const navigate = useNavigate();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(prev => ({
-      ...prev,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
       [name]: value
-    }));
+    });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     addBox(formData);
     setFormData({ boxOwner: '', boxSize: 'Small' });
     navigate('/mailboxes');

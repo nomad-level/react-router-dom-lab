@@ -93,6 +93,13 @@ li {
 .mail-box {
   border: 2px solid white;
   padding: 20px;
+  margin: 10px;
+  display: inline-block;
+  min-width: 100px;
+  min-height: 80px;
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
 }
 
 form {

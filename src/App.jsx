@@ -7,34 +7,27 @@ import MailboxDetails from './components/MailboxDetails/MailboxDetails';
 import LetterForm from './components/LetterForm/LetterForm';
 
 function App() {
-  // Store all the mailboxes we have at the post office
   const [mailboxes, setMailboxes] = useState([]);
-  
-  // Store all the letters that have been sent
   const [letters, setLetters] = useState([]);
 
-  // When someone wants to rent a new mailbox
   const addBox = (formData) => {
-    const boxNumber = mailboxes.length + 1;
-    
-    const mailbox = {
-      _id: boxNumber,
+    const newMailbox = {
+      _id: mailboxes.length + 1,
       boxOwner: formData.boxOwner,
       boxSize: formData.boxSize
     };
     
-    setMailboxes(currentMailboxes => [...currentMailboxes, mailbox]);
+    setMailboxes([...mailboxes, newMailbox]);
   };
 
-  // When someone wants to send a letter
   const addLetter = (formData) => {
-    const letter = {
+    const newLetter = {
       mailboxId: Number(formData.mailboxId),
       recipient: formData.recipient,
       message: formData.message
     };
     
-    setLetters(currentLetters => [...currentLetters, letter]);
+    setLetters([...letters, newLetter]);
   };
 
   return (
@@ -49,22 +42,18 @@ function App() {
             </main>
           } 
         />
-        
         <Route 
           path="/mailboxes" 
           element={<MailboxList mailboxes={mailboxes} />} 
         />
-        
         <Route 
           path="/new-mailbox" 
           element={<MailboxForm addBox={addBox} />} 
         />
-        
         <Route 
           path="/new-letter" 
           element={<LetterForm mailboxes={mailboxes} addLetter={addLetter} />} 
         />
-        
         <Route 
           path="/mailboxes/:mailboxId" 
           element={<MailboxDetails mailboxes={mailboxes} letters={letters} />} 
