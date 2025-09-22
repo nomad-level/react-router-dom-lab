@@ -1,49 +1,40 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function MailboxForm({ onCreateMailbox }) {
-  // Track what the user is typing in the form
-  const [customerInfo, setCustomerInfo] = useState({
+function MailboxForm({ addBox }) {
+  const [formData, setFormData] = useState({
     boxOwner: '',
     boxSize: 'Small'
   });
   
   const navigate = useNavigate();
 
-  // Update our form data when someone types or selects something
-  const handleInputChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setCustomerInfo(previousInfo => ({
-      ...previousInfo,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
     }));
   };
 
-  // When someone submits the form, create their mailbox
-  const handleFormSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    
-    // Create the new mailbox with the customer's info
-    onCreateMailbox(customerInfo);
-    
-    // Clear the form for the next customer
-    setCustomerInfo({ boxOwner: '', boxSize: 'Small' });
-    
-    // Take them to see all the mailboxes
+    addBox(formData);
+    setFormData({ boxOwner: '', boxSize: 'Small' });
     navigate('/mailboxes');
   };
 
   return (
     <main>
       <h1>New Mailbox</h1>
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="boxOwner">Enter a Boxholder:</label>
         <input
           type="text"
           id="boxOwner"
           name="boxOwner"
-          value={customerInfo.boxOwner}
-          onChange={handleInputChange}
+          value={formData.boxOwner}
+          onChange={handleChange}
           placeholder="Boxholder name"
           required
         />
@@ -52,8 +43,8 @@ function MailboxForm({ onCreateMailbox }) {
         <select
           id="boxSize"
           name="boxSize"
-          value={customerInfo.boxSize}
-          onChange={handleInputChange}
+          value={formData.boxSize}
+          onChange={handleChange}
         >
           <option value="Small">Small</option>
           <option value="Medium">Medium</option>

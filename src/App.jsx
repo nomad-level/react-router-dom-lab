@@ -4,32 +4,43 @@ import NavBar from './components/NavBar/NavBar';
 import MailboxForm from './components/MailboxForm/MailboxForm';
 import MailboxList from './components/MailboxList/MailboxList';
 import MailboxDetails from './components/MailboxDetails/MailboxDetails';
+import LetterForm from './components/LetterForm/LetterForm';
 
 function App() {
-  // Keep track of all the mailboxes in our post office
-  const [allMailboxes, setAllMailboxes] = useState([]);
+  // Store all the mailboxes we have at the post office
+  const [mailboxes, setMailboxes] = useState([]);
+  
+  // Store all the letters that have been sent
+  const [letters, setLetters] = useState([]);
 
-  // Function to create a new mailbox and add it to our collection
-  const createNewMailbox = (mailboxInfo) => {
-    // Generate the next available box number
-    const nextBoxNumber = allMailboxes.length + 1;
+  // When someone wants to rent a new mailbox
+  const addBox = (formData) => {
+    const boxNumber = mailboxes.length + 1;
     
-    // Create the new mailbox with all the details
-    const freshMailbox = {
-      _id: nextBoxNumber,
-      boxOwner: mailboxInfo.boxOwner,
-      boxSize: mailboxInfo.boxSize
+    const mailbox = {
+      _id: boxNumber,
+      boxOwner: formData.boxOwner,
+      boxSize: formData.boxSize
     };
     
-    // Add the new mailbox to our existing collection
-    setAllMailboxes([...allMailboxes, freshMailbox]);
+    setMailboxes(currentMailboxes => [...currentMailboxes, mailbox]);
+  };
+
+  // When someone wants to send a letter
+  const addLetter = (formData) => {
+    const letter = {
+      mailboxId: Number(formData.mailboxId),
+      recipient: formData.recipient,
+      message: formData.message
+    };
+    
+    setLetters(currentLetters => [...currentLetters, letter]);
   };
 
   return (
     <Router>
       <NavBar />
       <Routes>
-        {/* Welcome page for our post office */}
         <Route 
           path="/" 
           element={
@@ -39,22 +50,24 @@ function App() {
           } 
         />
         
-        {/* Show all available mailboxes */}
         <Route 
           path="/mailboxes" 
-          element={<MailboxList mailboxes={allMailboxes} />} 
+          element={<MailboxList mailboxes={mailboxes} />} 
         />
         
-        {/* Form to register a new mailbox */}
         <Route 
           path="/new-mailbox" 
-          element={<MailboxForm onCreateMailbox={createNewMailbox} />} 
+          element={<MailboxForm addBox={addBox} />} 
         />
         
-        {/* Details page for a specific mailbox */}
+        <Route 
+          path="/new-letter" 
+          element={<LetterForm mailboxes={mailboxes} addLetter={addLetter} />} 
+        />
+        
         <Route 
           path="/mailboxes/:mailboxId" 
-          element={<MailboxDetails mailboxes={allMailboxes} />} 
+          element={<MailboxDetails mailboxes={mailboxes} letters={letters} />} 
         />
       </Routes>
     </Router>
